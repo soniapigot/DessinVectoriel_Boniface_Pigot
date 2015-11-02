@@ -1,4 +1,6 @@
-package Figure;
+package figure;
+
+import outils.Crayon;
 
 public class Polygone implements IChemin{
 
@@ -26,6 +28,18 @@ public class Polygone implements IChemin{
 
 	public void setNombreSegments(int nombreSegments) {
 		this.nombreSegments = nombreSegments;
+	}
+
+	@Override
+	public void dessiner(Crayon crayon) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void remplir(Crayon crayon) {
+		// TODO Auto-generated method stub
+		
 	}
 	
 	

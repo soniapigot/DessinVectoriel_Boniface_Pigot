@@ -1,4 +1,6 @@
-package Figure;
+package figure;
+
+import outils.Crayon;
 
 public class Segment implements IChemin{
 
@@ -21,6 +23,16 @@ public class Segment implements IChemin{
 	}
 	public void setPoint2(Point point2) {
 		this.point2 = point2;
+	}
+	@Override
+	public void dessiner(Crayon crayon) {
+		// TODO Auto-generated method stub
+		
+	}
+	@Override
+	public void remplir(Crayon crayon) {
+		// TODO Auto-generated method stub
+		
 	}
 	
 	

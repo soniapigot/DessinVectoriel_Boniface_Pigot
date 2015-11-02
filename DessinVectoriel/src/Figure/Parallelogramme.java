@@ -1,4 +1,6 @@
-package Figure;
+package figure;
+
+import outils.Crayon;
 
 public class Parallelogramme implements IChemin{
 	
@@ -36,6 +38,18 @@ public class Parallelogramme implements IChemin{
 
 	public void setAngle(double angle) {
 		this.angle = angle;
+	}
+
+	@Override
+	public void dessiner(Crayon crayon) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void remplir(Crayon crayon) {
+		// TODO Auto-generated method stub
+		
 	}
 	
 	

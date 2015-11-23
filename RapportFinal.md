@@ -1,4 +1,4 @@
-#PROJET D'ARCHITECTURE LOGICIELLE
+﻿#PROJET D'ARCHITECTURE LOGICIELLE
 #Un langage de dessin vectoriel
 #*PIGOT Sonia - BONIFACE Mélyna*
 
@@ -101,8 +101,18 @@ La liste de dessins est une liste vide qu'il faut maintenant remplir en créant 
 				.ajouterCrayonRemplir(crayonBuilder.choisirEpaisseur(3).choisirCouleur(Couleurs.purple).creerCrayon())
 				.creerForme());
 
+		// renvoit le dessinComposite 1
+		DessinComposite d1 = dessinBuilder.creerDessin();
 
-L'utilisateur crée au début du script toutes les instances de Builder dont il aura besoin : ici, il souhaite dessiner un carré et un cercle, en utilisant des crayons, ce qui donnera une forme (une Forme étant un triplet IChemin chemin, Crayon crayonContour, Crayon crayonRemplir). L'utilisateur
+		// Ajouter les dessins créés dans la liste des dessins à afficher, en leur donnant un nom
+		this.dessins.put("MonDessin1", d1);
+
+
+L'utilisateur crée au début du script toutes les instances de Builder dont il aura besoin : ici, il souhaite dessiner un carré et un cercle, en utilisant des crayons, ce qui donnera une forme (une Forme étant un triplet IChemin chemin, Crayon crayonContour, Crayon crayonRemplir). L'utilisateur crée donc un CarreBuilder, un CercleBuilder, un CrayonBuilder, un FormeBuilder et bien entendu un DessinBuilder.
+
+Ensuite, il construit progressivement son dessin en instanciant les attributs de DessinBuilder, en appelant les fonctions qu'il a à disposition.
+
+Pour finir, il fait appelle à la fonction creerDessin() sur l'objet dessinBuilder, qui renvoit un objet DessinComposite, qu'il faut ajouter à la HashMap contenant les dessins à afficher, en lui donnant un nom.
 
 
 

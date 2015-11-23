@@ -1,6 +1,15 @@
 # Dessin Vectoriel
 
-## mode d'emploi ##
+
+## Installation du projet
+
+Pour utiliser le projet de dessin vectoriel, veuillez suivre les instructions ci-dessous :
+
+1. Ouvrir Eclipse
+2. Importer le projet en cliquant sur File -> Import
+3. Dans la fenêtre qui s'ouvre, sélectionner Archive File, puis cliquer sur Next
+4. Rechercher l'archive du projet dans vos dossiers en cliquant sur Browse : dessinVectoriel-Boniface-Pigot.zip
+## Mode d'emploi ##
 
 Ce projet vous permet de créer un dessin vectoriel. Pour cela, vous allez devoir suivre quelques règles d'utilisation.
 

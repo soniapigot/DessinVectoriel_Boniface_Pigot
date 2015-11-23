@@ -115,6 +115,7 @@ Ensuite, il construit progressivement son dessin en instanciant les attributs de
 Pour finir, il fait appelle à la fonction creerDessin() sur l'objet dessinBuilder, qui renvoit un objet DessinComposite, qu'il faut ajouter à la HashMap contenant les dessins à afficher, en lui donnant un nom.
 
 
+
 ### Les opérateurs de contrôle
 
 Le script est écrit par défaut en mode séquence, autrement dit les instructions seront exécutées les unes à la suite des autres dans le constructeur de la classe Builder.java.
@@ -139,10 +140,77 @@ Dans le script de l'utilisateur, on y fera appel comme suit :
 Ces deux classes peuvent donc être complétées si l'on souhaite rajouter de nouvelles méthodes contrôlant l'exécution des instructions.
 
 
-
-
-
 ##Interprétations du langage
+Les interprétations choisis pour ce projet sont: SVG, Graphics2D. Le patron interpréteur pour implémenter ces deux interprétations. Pour cela, une méthode evaluate a été coder dans la classe Builder afin d'évaluer l'interprétation. Cette méthode appelle la méthode interpret de la classe SVG si l'interprétation SVG a été choisi ou la méthode interpret de la classe JAVA si l'interprétation Graphics2D a été choisi. Ces méthodes prennent en argument la HashMap de DessinComposite créée précédement.
+
+
+###SVG
+
+Un fichier dessinVide.svg se situe dans le dossier fichierSVG à la racine du projet. Ce fichier est seulement constitué de la balise d'ouverture pour configurer un fichier SVG. 
+
+La méthode interpret de la classe SVG fait pour chaque dessin dans la HashMap de DessinComposite:
+
+- un copie du contenu de dessinVide.svg dans un nouveau fichier SVG enregistré avec le nom que l'utilisateur a donné au dessin. 
+- appelle la fonction TexteSVG prenant pour argument le titre du dessin, le dessin en cours dans la boucle et un booléan assigné à true afin de signifier que ce dessin n'est pas un dessin inséré dans un autre dessin.
+
+La fonction TexteSVG quant à elle, parcourt le dessin, c'est-à-dire qu'elle parcourt la liste de Forme du dessin, la liste d'Etiquette du dessin et la liste de IDessin du dessin pris en argument. La liste de IDessin représentant la liste de dessin insérés dans le dessin. Durant ce parcourt, le fichier SVG créé par la fonction interpret est rempli. 
+
+En effet, la fonction dessinerSVG est appeler pour construire les figures. La fonction etiqueterSVG est appeler pour construire des etiquettes. Ces fonctions renvoient un String qui va être écrit dans le fichier SVG grâce à un FileWriter. Par exemple la création d'une Etiquette sous SVG se fait comme-ci: 
+
+Dans la méthode TexteSVG:
+
+		  	for(Etiquette e: listeEtiquette) {
+			 texte = "\r\n <text " + dessin.etiqueterSVG(e) + ">" + e.getEtiquete() + "</text>";
+			 writer.write(texte,0,texte.length());
+		 }
+
+Où dessin est le dessin pris en argument de la fonction et writer est le FileWriter.
+
+La méthode etiqueterSVG quant à elle est situé dans la classe DessinComposite dont l'architecture sera précisé dans le paragraphe suivant: 
+
+	public String etiqueterSVG(Etiquette e) {
+		return "x=\""+ e.getPoint().getAbscisse() + "\" y=\"" + e.getPoint().getOrdonnee() + "\" stroke=\"" + e.getCrayon().getCouleur() + "\"  stroke-width=\"" + e.getCrayon().getEpaisseurTrait() + "\"";
+	}
+
+En effet une Etiquette est composée d'un Point et a une crayon ayant une couleur et une épaisseur.
+
+Le parcourt de la liste de dessin est quant à lui traité différent des deux précédentes liste. La liste de dessin rappel la fonction TexteSVG pour parcourir les dessins insérer et ajouter les formes, étiquettes et dessins insérés du dessin inséré de la liste de dessin inséré. Cependant, pour notifié que c'est un dessin inséré, le boolean sera false. En effet, si la fonction est appliqué à un dessin inséré alors la balise de fin de fichier SVG ne doit pas être ajouté. C'est pourquoi à la fin de la méthodé TexteSVG, pour inséré cette balise, le boolean est vérifié.
+
+Le dessin SVG est alors fini et se situe dans fichierSVG. L'utilisateur peut le lancer dans son navigateur par défaut.
+
+
+###Graphics2D
+
+La méthode interpret de la classe SVG fait pour chaque dessin dans la HashMap de DessinComposite la création d'une Fenetre qui sera la fenêtre de dessin prenant pour argument la HashMap de DessinComposite créé dans le Builder.
+
+Dans la classe Fenetre héritant de JFrame, une fenêtre est créé grâce au constructeur de la façon suivante:
+
+- avec un titre étant le nom du dessin
+- étant à la taille de l'écran
+- soit visible
+- fermant l'application lorsque la fenêtre est fermée
+- créé un Panneau à l'intérieur de la fenêtre grâce à un constructeur de Panneau.
+
+Un Panneau est une classe qui hérite de JPanel et qui a une instance de type Entry. 
+
+Lorsque la Fenetre est créé, la méthode paintComponant de Panneau est automatiquement appelée. Cette méthode parcourt l'instance créé grâce au constructeur de Panneau dans le constructeur de Fenetre. Cette instance a donc été initialisée avec l'ensemble des DessinComposite de la HashMap. Ainsi comme, dans l'interprétation SVG, la liste de Forme et la liste d'étiquettes sont parcourues. Par exemple pour une liste de Forme:
+
+    	for(Forme f: listeForme) {
+	    	 IChemin c = f.getChemin();
+	       	 entry.getValue().dessinerJAVA((Graphics2D) g, c, f.getCrayonContour());
+	       	 entry.getValue().remplirJAVA((Graphics2D) g, c, f.getCrayonRemplir());
+	     }
+
+Il y a un appel aux méthodes dessinerJAVA et remplirJAVA qui sont dans DessinComposite et qui font appel à la classe static Bibliotheque contenant toutes les méthodes pour remplir ou dessiner des formes ou des etiquettes en Graphics2D. Un exemple de création de carré est le suivant:
+
+    public static void createCarre(Graphics g, Carre car, Crayon crayon) {
+	    Font font = new Font("Courier", Font.BOLD, crayon.getEpaisseurTrait()*10);
+	    g.setFont(font);
+		g.setColor(couleurs(crayon.getCouleur()));
+		g.drawRect(car.getP().getAbscisse(), car.getP().getOrdonnee(), car.getCote(), car.getCote());
+	}
+
+Ainsi le dessin vectoriel est créé au lancement de l'application.
 
 ##Architecture logicielle
 

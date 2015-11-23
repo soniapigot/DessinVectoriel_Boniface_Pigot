@@ -74,7 +74,7 @@ Enfin, pour que ce dessins puisse être interprété par le programme et affich�
 
 Le script est écrit par défaut en mode séquence, autrement dit vos instructions seront exécutées les unes à la suite des autres.
 
-En revanche, pour faciliter la création de dessins, il existe deux classes faisant office de bibliothèque, et permettant de coder des méthodes contrôlant une suite d'instruction.
+En revanche, pour faciliter la création de dessins, il existe deux classes faisant office de bibliothèques, et permettant de coder des méthodes contrôlant une suite d'instructions.
 
 - Boucle.java : cette classe contient un exemple de méthode permettant de répéter n fois la construction d'un cercle dont le centre ne change pas mais le diamètre augmente. Ainsi, dans le script, il suffit de creer une instance de la classe Boucle, et d'appeler la fonction : cela évite la répétition de code pour dessiner n cercles qui se ressemblent .
 
